@@ -8,19 +8,34 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 
+/**
+ * デジタル数字パネルのクラス
+ * @author Masaaki Horikawa
+ */
 public class NumberView extends ImageView implements OnTouchListener{
 	private int number;
 	private int[] nums;
-	private int max;
-	private boolean changeOK;
+	private int base;
+	private boolean changeable;
 
+	/**
+	 * コンストラクタ.
+	 * @param context 	このViewを実装するコンテンツ
+	 * @param attrs		main_layout.xmlから読み込まれる属性
+	 */
 	public NumberView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		// TODO
+
+		// main_Layout.xmlから、base属性値を読み込んで代入する
+		base = attrs.getAttributeIntValue(null, "base", 10);
+
+		// リスナー設定
 		this.setOnTouchListener(this);
 
+		// 初期値は0
 		number = 0;
 
+		// 0-9までのImageを読み込む
 		nums = new int[10];
 		nums[0] = R.drawable.n0;
 		nums[1] = R.drawable.n1;
@@ -33,38 +48,48 @@ public class NumberView extends ImageView implements OnTouchListener{
 		nums[8] = R.drawable.n8;
 		nums[9] = R.drawable.n9;
 
-		this.setImageResource(nums[number]);
+		// Imageをnumberの値で更新
+		setImageResource(nums[number]);
 
-		changeOK = true;
+		// パネルをタッチで、値の変更が可能
+		changeable = true;
 	}
 
-	public void setMax(int m){
-		max = m;
-	}
-
+	/**
+	 * 現在のnumberを返す.
+	 * @return 現在のパネルの数値
+	 */
 	public int getNumber(){
 		return number;
 	}
 
-	public void setNumber(int n){
-		number = n;
-		setImageResource(nums[n]);
+	/**
+	 * パネルの表示値を変更する.
+	 * @param _number 変更するパネルの数値
+	 */
+	public void setNumber(int _number){
+		number = _number;
+		setImageResource(nums[number]);
 	}
 
-	public void setChangeOK(boolean b){
-		changeOK = b;
+	/** パネルの値を変更できるかどうかのフラグを設定する.
+	 * @param _changeable 変更可能ならtrue
+	 */
+	public void setChangeOK(boolean _changeable){
+		changeable = _changeable;
 	}
 
+	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-		if(changeOK){
+		if(changeable){
 			switch(event.getAction()){
 			case MotionEvent.ACTION_DOWN:
 				Rect rect = new Rect();
 				getFocusedRect(rect);
 				if(event.getY() < rect.centerY()){
-					number = (number + max - 1) % max;
+					number = (number + base - 1) % base;
 				}else{
-					number = (number + 1) % max;
+					number = (number + 1) % base;
 				}
 				setImageResource(nums[number]);
 				break;

@@ -2,34 +2,50 @@ package jp.ac.bemax.kerokerotimer;
 
 import java.util.Timer;
 import java.util.TimerTask;
-
 import android.os.Handler;
 
+enum Condition {STOP, PLAY, PAUSE};
+
+/**
+ *
+ * @author Masaaki Horikawa
+ */
 public class TimerLogic implements Runnable{
+	/**
+	 * タイマーの本体クラス.
+	 */
+
 	private Timer timer;
-	private NumberView[] numberViews;
+	private DigitalPanel digitalPanel;
 	private Thread thread;
 	private int time;
 	private TimerTask task;
 	private Handler handler;
 
-	public TimerLogic(NumberView[] nv){
-		numberViews = nv;
+	/** タイマーの状態 */
+	Condition condition;
+
+	/**
+	 * コンストラクタ
+	 * @param _digitalPanel デジタルパネル
+	 */
+	public TimerLogic(DigitalPanel _digitalPanel){
+		digitalPanel = _digitalPanel;
+
+		condition = Condition.STOP;
 
 		timer = new Timer();
-
 		task = new TimerTask(){
 
 			@Override
 			public void run() {
-				// TODO 自動生成されたメソッド・スタブ
 				time --;
 
-				setNumberViews();
+				digitalPanel.setPanels(time);
 
 				if(time==0){
 					timer.cancel();
-					for(NumberView n: numberViews){
+					for(NumberView n: digitalPanel.panels){
 						n.setChangeOK(true);
 					}
 				}
@@ -37,60 +53,31 @@ public class TimerLogic implements Runnable{
 
 		};
 
-		thread = new Thread(this);
-
 		handler = new Handler();
+
 	}
 
+	/**
+	 * デジタルパネルの初期化
+	 */
 	public void init(){
-		int t;
-		t = numberViews[0].getNumber() * 3600;
-		t += numberViews[1].getNumber() * 600;
-		t += numberViews[2].getNumber() * 60;
-		t += numberViews[3].getNumber() * 10;
-		t += numberViews[4].getNumber();
-
-		time = t;
+		time = digitalPanel.getTime();
+		thread = new Thread(this);
 	}
 
+	/**
+	 * タイマーをスタートさせる
+	 */
 	public void startTimer(){
 		init();
-		for(NumberView n: numberViews){
+		for(NumberView n: digitalPanel.panels){
 			n.setChangeOK(false);
 		}
 		thread.start();
 	}
 
-	public void setNumberViews(){
-		final int tt = time;
-		Thread t = new Thread(new Runnable(){
-			public void run(){
-				handler.post(new Runnable() {
-					public void run() {
-						// TODO 自動生成されたメソッド・スタブ
-
-						int t = tt;
-
-						numberViews[4].setNumber(t % 10);
-						t /= 10;
-						numberViews[3].setNumber(t % 6);
-						t /= 6;
-						numberViews[2].setNumber(t % 10);
-						t /= 10;
-						numberViews[1].setNumber(t % 6);
-						t /= 6;
-						numberViews[0].setNumber(t);
-					}
-				});
-			}
-		});
-
-		t.start();
-
-	}
-
+	@Override
 	public void run() {
-		// TODO 自動生成されたメソッド・スタブ
-		timer.schedule(task, 0, 1000);
+		timer.schedule(task, 1000, 1000);
 	}
 }

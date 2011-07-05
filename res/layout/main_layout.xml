@@ -1,16 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:id="@layout/main_layout" android:orientation="vertical" android:gravity="center">
-    <LinearLayout android:id="@+id/linearLayout1" android:layout_width="fill_parent" android:background="@color/digital_window_back" android:layout_height="100dp" android:gravity="center">
-        <jp.ac.bemax.kerokerotimer.NumberView android:layout_width="wrap_content" android:id="@+id/hour1" android:layout_height="fill_parent" android:src="@drawable/n0"></jp.ac.bemax.kerokerotimer.NumberView>
-        <ImageView android:layout_width="wrap_content" android:src="@drawable/colon" android:id="@+id/imageView1" android:layout_height="fill_parent"></ImageView>
-        <jp.ac.bemax.kerokerotimer.NumberView android:layout_width="wrap_content" android:id="@+id/min1" android:layout_height="fill_parent" android:src="@drawable/n0"></jp.ac.bemax.kerokerotimer.NumberView>
-        <jp.ac.bemax.kerokerotimer.NumberView android:layout_width="wrap_content" android:id="@+id/min2" android:layout_height="fill_parent" android:src="@drawable/n0"></jp.ac.bemax.kerokerotimer.NumberView>
-        <ImageView android:layout_width="wrap_content" android:src="@drawable/colon" android:id="@+id/imageView2" android:layout_height="fill_parent"></ImageView>
-        <jp.ac.bemax.kerokerotimer.NumberView android:layout_width="wrap_content" android:id="@+id/sec1" android:layout_height="fill_parent" android:src="@drawable/n0"></jp.ac.bemax.kerokerotimer.NumberView>
-        <jp.ac.bemax.kerokerotimer.NumberView android:layout_width="wrap_content" android:id="@+id/sec2" android:layout_height="fill_parent" android:src="@drawable/n0"></jp.ac.bemax.kerokerotimer.NumberView>
+    android:id="@layout/main_layout"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <LinearLayout
+    	android:layout_width="fill_parent"
+    	android:background="@color/digital_window_back"
+    	android:layout_height="100dp"
+    	android:gravity="center"
+    	android:id="@+id/digital_panel">
+
+        <jp.ac.bemax.kerokerotimer.NumberView
+        	android:layout_width="wrap_content"
+        	android:id="@+id/hour1"
+        	android:layout_height="fill_parent"
+        	android:src="@drawable/n0"
+        	base="2">
+        </jp.ac.bemax.kerokerotimer.NumberView>
+        <ImageView android:layout_width="wrap_content"
+        	android:src="@drawable/colon"
+        	android:id="@+id/imageView1"
+        	android:layout_height="fill_parent">
+        </ImageView>
+        <jp.ac.bemax.kerokerotimer.NumberView
+        	android:layout_width="wrap_content"
+        	android:id="@+id/min1"
+        	android:layout_height="fill_parent"
+        	android:src="@drawable/n0"
+        	base="6">
+        </jp.ac.bemax.kerokerotimer.NumberView>
+        <jp.ac.bemax.kerokerotimer.NumberView
+        	android:layout_width="wrap_content"
+        	android:id="@+id/min2"
+        	android:layout_height="fill_parent"
+        	android:src="@drawable/n0"
+        	base="10">
+        </jp.ac.bemax.kerokerotimer.NumberView>
+        <ImageView
+        	android:layout_width="wrap_content"
+        	android:src="@drawable/colon"
+        	android:id="@+id/imageView2"
+        	android:layout_height="fill_parent">
+        </ImageView>
+        <jp.ac.bemax.kerokerotimer.NumberView
+        	android:layout_width="wrap_content"
+        	android:id="@+id/sec1"
+        	android:layout_height="fill_parent"
+        	android:src="@drawable/n0"
+        	base="6">
+        </jp.ac.bemax.kerokerotimer.NumberView>
+        <jp.ac.bemax.kerokerotimer.NumberView
+        	android:layout_width="wrap_content"
+        	android:id="@+id/sec2"
+        	android:layout_height="fill_parent"
+        	android:src="@drawable/n0"
+        	base="10">
+        </jp.ac.bemax.kerokerotimer.NumberView>
     </LinearLayout>
-    <SurfaceView android:layout_width="fill_parent" android:layout_height="300dp" android:id="@+id/surfaceView"></SurfaceView>
+    <FrameLayout
+    	android:layout_height="wrap_content"
+    	android:layout_width="fill_parent"
+    	android:id="@+id/anarog_panel">
+
+        <SurfaceView
+        	android:layout_height="300dp"
+        	android:layout_width="fill_parent"
+        	android:layout_gravity="center"
+        	android:id="@+id/analogView"
+        	android:background="@drawable/icon">
+        </SurfaceView>
+        <ImageView
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="center"
+        	android:id="@+id/play_button" android:src="@drawable/icon">
+        </ImageView>
+    </FrameLayout>
 </LinearLayout>

@@ -4,37 +4,37 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.SurfaceView;
 
-import android.widget.ImageView;
-
+/**
+ *
+ * @author Masaaki Horikawa
+ *
+ */
 public class KeroKeroTimerActivity extends Activity {
-    /** Called when the activity is first created. */
-	private TimerLogic logic;
-	private NumberView[] numberViews;
+    /**
+     * KeroKeroTimerが起動されたとき、最初に呼び出されるクラス.
+     */
+
+	private TimerLogic timerLogic;
+	private DigitalPanel digitalPanel;
+	private SurfaceView analogView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // main_layout.xmlを反映させる
         setContentView(R.layout.main_layout);
 
-        numberViews = new NumberView[5];
+        // digitalPanelを初期化
+        digitalPanel = new DigitalPanel(findViewById(R.id.digital_panel));
 
-        numberViews[0] = (NumberView)findViewById(R.id.hour1);
-        numberViews[1] = (NumberView)findViewById(R.id.min1);
-        numberViews[2] = (NumberView)findViewById(R.id.min2);
-        numberViews[3] = (NumberView)findViewById(R.id.sec1);
-        numberViews[4] = (NumberView)findViewById(R.id.sec2);
+        // analogPanelを初期化
+        analogView = (SurfaceView)findViewById(R.id.analogView);
 
-        numberViews[0].setMax(2);
-        numberViews[1].setMax(6);
-        numberViews[2].setMax(10);
-        numberViews[3].setMax(6);
-        numberViews[4].setMax(10);
+        // タイマーを初期化
+        timerLogic = new TimerLogic(digitalPanel);
 
-        SurfaceView sw = (SurfaceView)findViewById(R.id.surfaceView);
-
-        logic = new TimerLogic(numberViews);
-
-
+        PlayButton playButton = new PlayButton(timerLogic, findViewById(R.id.play_button));
     }
 
 	@Override
@@ -42,19 +42,6 @@ public class KeroKeroTimerActivity extends Activity {
 		// TODO 自動生成されたメソッド・スタブ
 		super.onStart();
 
-		Thread t = new Thread(){
-			public void run(){
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					// TODO 自動生成された catch ブロック
-					e.printStackTrace();
-				}
-				logic.startTimer();
-			}
-		};
-
-		t.start();
 	}
 
 }
